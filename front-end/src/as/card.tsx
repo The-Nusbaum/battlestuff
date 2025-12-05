@@ -1,58 +1,45 @@
-import { useState } from "react";
+import { useState, JSX } from "react";
 import * as Util from "./util"; 
 import "./card.css";
 
 const { Plus, Minus, AsPipRow, getAsPvBySkill } = Util;
 
-class AsCardData implements AsCard {
-  constructor(
-    public name: string,
-    public tp: string,
-    public sz: number,
-    public tmm: number,
-    public mv: string,
-    public role: string,
-    public skill: number,
-    public skill_base: number,
-    public armor: PipValue,
-    public structure: PipValue,
-    public specials: AsCard['specials'],
-    public criticals: AsCard['criticals'],
-    public damages: AsCard['damages'],
-    public pv: AsCard['pv'],
-  ) {}
+export class AsCard {
+  name: string;
+  tp: string;
+  sz: number;
+  tmm: number;
+  mv: string;
+  role: string;
+  skill: number;
+  skill_base: number;
+  armor: PipValue;
+  structure: PipValue;
+  specials: { shortName: string; fullName: string; description: string; source: string }[];
+  criticals: { engine: PipValue; fireControl: PipValue; weapons: PipValue; motive: PipValue };
+  damages: { short: string; medium: string; long: string; horizon: string };
+  pv: { base: number; current: number };
+
+  constructor(data: AsCard) {
+    this.name = data.name;
+    this.tp = data.tp;
+    this.sz = data.sz;
+    this.tmm = data.tmm;
+    this.mv = data.mv;
+    this.role = data.role;
+    this.skill = data.skill;
+    this.skill_base = data.skill_base;
+    this.armor = data.armor;
+    this.structure = data.structure;
+    this.specials = data.specials;
+    this.criticals = data.criticals;
+    this.damages = data.damages;
+    this.pv = data.pv;
+  }
 }
 
-function AsCardComponent() {
-  const specials = [
-    { shortName: "Special 1", fullName: "Special 1 full name", description: "Special 1 description", source: "Special 1 source" },
-    { shortName: "Special 2", fullName: "Special 2 full name", description: "Special 2 description", source: "Special 2 source" },
-    { shortName: "Special 3", fullName: "Special 3 full name", description: "Special 3 description", source: "Special 3 source" },
-  ];
-  const initialCriticals = {
-    engine: { max: 2, current: 0 },
-    fireControl: { max: 4, current: 0 },
-    weapons: { max: 4, current: 0 },
-    motive: { max: 4, current: 0 },
-  };
-  const damages = { short: "5", medium: "4", long: "3", horizon: "1*" };
-  const asCard = new AsCardData(
-    "name", 
-    "TYPE", 
-    2, 
-    2, 
-    '5"t', 
-    "Brawler",
-    4, 
-    4, 
-    { max: 5, current: 3 }, 
-    { max: 3, current: 1 }, 
-    specials, 
-    initialCriticals, 
-    damages, 
-    { base: 69, current: 69 }
-  );
-
+export function AsCardComponent({ asCard }: { asCard: AsCard }): JSX.Element {
+  console.log(asCard);
   const [armor, setArmor] = useState(asCard.armor.current);
   const [structure, setStructure] = useState(asCard.structure.current);
   const [skill, setSkill] = useState(asCard.skill);
@@ -149,4 +136,9 @@ function AsCardComponent() {
     </div>
   );
 }
-export default AsCardComponent;
+
+export async function getAsCard(): Promise<AsCard> {
+  const response = await fetch('http://localhost:8080/api/v1/stubs/as-card');
+  const data = await response.json();
+  return new AsCard(data);
+}
