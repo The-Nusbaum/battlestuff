@@ -1,0 +1,58 @@
+services:
+  frontend:
+    container_name: frontend
+    image: node:20-alpine
+    working_dir: /app
+    volumes:
+      - ./front-end:/app
+      - /app/node_modules
+    ports:
+      - "80:3000"
+    command: sh -c "npm install && npm start"
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    networks:
+      - battlestuff-network
+    restart: unless-stopped
+  backend:
+    container_name: backend
+    image: ruby:3.4.6
+    working_dir: /app
+    volumes:
+      - ./back-end-ruby:/app
+    ports:
+      - "8080:3000"
+    command: sh -c "rm -f tmp/pids/server.pid && bundle install && bundle exec rails s -b 0.0.0.0"
+    environment:    
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+    networks:
+      - battlestuff-network
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+  db:
+    container_name: db
+    image: postgres:15 # Use the desired PostgreSQL version
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    networks:
+      - battlestuff-network
+    ports:
+      - "5432:5432" # Map host port 5432 to container port 5432
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data # Persist data in a named volume
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U battledb -d battledb"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+networks:
+  battlestuff-network:
+    driver: bridge

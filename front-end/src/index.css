@@ -1,0 +1,74 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik+Distressed&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.AsCard {
+  zoom:1
+}
+
+.hazard-weathered {
+  background-color: #6b7280;
+  background-image: 
+    /* Chips/scratches revealing gray underneath */
+    radial-gradient(ellipse 8px 3px at 15% 30%, #6b7280 70%, transparent 71%),
+    radial-gradient(ellipse 4px 6px at 45% 70%, #6b7280 70%, transparent 71%),
+    radial-gradient(ellipse 12px 4px at 75% 20%, #6b7280 70%, transparent 71%),
+    radial-gradient(ellipse 6px 8px at 25% 80%, #6b7280 70%, transparent 71%),
+    radial-gradient(ellipse 5px 3px at 85% 55%, #6b7280 70%, transparent 71%),
+    radial-gradient(ellipse 7px 4px at 55% 40%, #6b7280 70%, transparent 71%),
+    radial-gradient(ellipse 3px 5px at 35% 15%, #6b7280 70%, transparent 71%),
+    radial-gradient(ellipse 9px 3px at 65% 85%, #6b7280 70%, transparent 71%),
+    /* Subtle grime/dirt overlay */
+    radial-gradient(circle at 20% 50%, rgba(0,0,0,0.15) 0%, transparent 50%),
+    radial-gradient(circle at 70% 30%, rgba(0,0,0,0.1) 0%, transparent 40%),
+    radial-gradient(circle at 50% 80%, rgba(0,0,0,0.12) 0%, transparent 45%),
+    /* Base hazard stripes */
+    repeating-linear-gradient(
+      45deg,
+      #fbbf24 0px,
+      #fbbf24 20px,
+      #1f2937 20px,
+      #1f2937 40px
+    );
+}
+
+.concrete-text {
+  color: #d0d0d0;
+  background: linear-gradient(
+    180deg,
+    #e8e8e8 0%,
+    #d0d0d0 20%,
+    #c0c0c0 40%,
+    #d0d0d0 60%,
+    #e0e0e0 80%,
+    #c8c8c8 100%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow:
+    /* Deep carved shadow */
+    2px 3px 2px rgba(25, 25, 25, 0.7),
+    /* Subtle highlight on top edge */
+    -1px -1px 0px rgba(180, 180, 180, 0.4),
+    /* Rough texture shadows */
+    1px 0px 1px rgba(0, 0, 0, 0.3),
+    0px 1px 1px rgba(0, 0, 0, 0.3),
+    /* Ambient grit */
+    3px 3px 4px rgba(0, 0, 0, 0.4),
+    -1px 2px 2px rgba(60, 60, 60, 0.3);
+}
